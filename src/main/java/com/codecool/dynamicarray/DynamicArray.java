@@ -46,6 +46,12 @@ public class DynamicArray {
     }
 
     public void remove(int indexToBeRemoved) {
+        if (indexToBeRemoved < 0 || indexToBeRemoved > this.size-1) {
+            throw new ArrayIndexOutOfBoundsException();
+        } else {
+            this.array[indexToBeRemoved] = 0;
+            this.size --;
+        }
     }
 
     public void insert(int index, int newValue) {
@@ -70,13 +76,9 @@ public class DynamicArray {
             this.array = temporary;
         }
     }
+
+    public String toString() {
+        return "[]";
+    }
 }
 
-//        if (index >= capacity) {
-//                DynamicArray temporary = new DynamicArray(this.capacity+1);
-//                for (int item : this.array) {
-//                temporary.add(item);
-//                }
-//                temporary.add(newValue);
-//                this.array = temporary;
-////            this.array[capacity] = newValue;
