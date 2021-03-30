@@ -1,10 +1,10 @@
 package com.codecool.dynamicarray;
 
-import java.util.Arrays;
+import java.util.StringJoiner;
 
 public class DynamicArray {
     private int[] array;
-    private int capacity;
+    private int capacity = 4;
     private int size;
 
     public DynamicArray(int capacity) {
@@ -13,7 +13,6 @@ public class DynamicArray {
     }
 
     public DynamicArray() {
-        this.capacity = 4;
         this.array = new int[this.capacity];
     }
 
@@ -31,11 +30,11 @@ public class DynamicArray {
             for (int i = 0; i < this.capacity; i++) {
                 temporary[i] = this.array[i];
             }
+            capacity *= 2;
             this.array = temporary;
         }
         this.array[size] = value;
         this.size ++;
-        System.out.println("Original Array : "+ Arrays.toString(this.array));
     }
 
     public int get(int index) {
@@ -57,28 +56,38 @@ public class DynamicArray {
     public void insert(int index, int newValue) {
         if (index < 0) {
             throw new ArrayIndexOutOfBoundsException();
-        } else if (index >= capacity) {
-            int[] temporary = new int[this.capacity+1];
-            for (int i = 0; i < this.capacity; i++) {
-                temporary[i] = this.array[i];
-            }
-            temporary[capacity] = newValue;
-            this.array = temporary;
         } else {
             int[] temporary = new int[this.capacity+1];
-            for (int i = 0; i < index; i++) {
-                temporary[i] = this.array[i];
+            for (int i = 0; i < this.capacity; i++) {
+                if (i < index) {
+                    temporary[i] = this.array[i];
+                } else if (i == index) {
+                    temporary[index] = newValue;
+                } else {
+                    temporary[i] = this.array[i-1];
+                }
             }
-            temporary[index] = newValue;
-            for (int i = index+1; i < this.capacity; i++) {
-                temporary[i+1] = this.array[i];
-            }
+            if (index >= capacity) {
+                temporary[size] = newValue;
+                this.capacity *= 2;}
             this.array = temporary;
+            size++;
         }
     }
 
+    @Override
     public String toString() {
-        return "[]";
+        if (size == 0) {
+            return "[]";
+        } else {
+            StringJoiner joiner = new StringJoiner(", ", "[", "]");
+            for (int x : this.array) {
+                if (x != 0) {
+                    joiner.add(String.valueOf(x));
+                }
+            }
+            return joiner.toString();
+        }
     }
 }
 
