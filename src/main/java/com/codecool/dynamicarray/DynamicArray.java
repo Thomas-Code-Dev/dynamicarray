@@ -27,7 +27,11 @@ public class DynamicArray {
 
     public void add(int value) {
         if (this.size == capacity) {
-            this.array = new int[this.capacity*2];
+            int[] temporary = new int[this.capacity*2];
+            for (int i = 0; i < this.capacity; i++) {
+                temporary[i] = this.array[i];
+            }
+            this.array = temporary;
         }
         this.array[size] = value;
         this.size ++;
@@ -45,5 +49,34 @@ public class DynamicArray {
     }
 
     public void insert(int index, int newValue) {
+        if (index < 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        } else if (index >= capacity) {
+            int[] temporary = new int[this.capacity+1];
+            for (int i = 0; i < this.capacity; i++) {
+                temporary[i] = this.array[i];
+            }
+            temporary[capacity] = newValue;
+            this.array = temporary;
+        } else {
+            int[] temporary = new int[this.capacity+1];
+            for (int i = 0; i < index; i++) {
+                temporary[i] = this.array[i];
+            }
+            temporary[index] = newValue;
+            for (int i = index+1; i < this.capacity; i++) {
+                temporary[i+1] = this.array[i];
+            }
+            this.array = temporary;
+        }
     }
 }
+
+//        if (index >= capacity) {
+//                DynamicArray temporary = new DynamicArray(this.capacity+1);
+//                for (int item : this.array) {
+//                temporary.add(item);
+//                }
+//                temporary.add(newValue);
+//                this.array = temporary;
+////            this.array[capacity] = newValue;
