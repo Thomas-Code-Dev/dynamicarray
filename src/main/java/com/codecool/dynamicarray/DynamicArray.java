@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class DynamicArray {
     private int[] array;
     private int capacity;
+    private int size;
 
     public DynamicArray(int capacity) {
         this.capacity = capacity;
@@ -21,28 +22,23 @@ public class DynamicArray {
     }
 
     public int size() {
-        int size = 0;
-        for (int item : this.array) {
-            if (item != 0) size ++;
-        }
         return size;
     }
 
     public void add(int value) {
-        if (size() <= capacity) {
-            for (int i = 0; i < capacity-1; i++) {
-                this.array[i] = this.array[i+1];
-                this.array[this.capacity-1] = value;
-            }
-            System.out.println("Original Array : "+ Arrays.toString(this.array));
-        } else {
+        if (this.size == capacity) {
             this.array = new int[this.capacity*2];
-            this.array[this.capacity/2] = value;
         }
+        this.array[size] = value;
+        this.size ++;
+        System.out.println("Original Array : "+ Arrays.toString(this.array));
     }
 
     public int get(int index) {
-        return 0;
+        if (index > size) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return array[index];
     }
 
     public void remove(int indexToBeRemoved) {
